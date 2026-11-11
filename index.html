@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Grid Gallery and Dashboard — Mohammad Saqib</title>
+<style>
+:root{--bg:#0d1511;--a:#19281f;--b:#121c16;--line:#2c3830;--soft:#1f2c24;--text:#f0f5ef;--muted:#a3b2a5;--accent:#a3e635;--ink:#10200a;--font:"Segoe UI",system-ui,-apple-system,Arial,Helvetica,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:5rem}
+body{background:var(--bg);color:var(--text);font:1rem/1.6 var(--font)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:1.1}
+h1{font-size:clamp(2.2rem,5vw,3.8rem);margin-bottom:1rem}
+h1 em{font-style:normal;color:var(--accent)}
+h2{font-size:clamp(1.8rem,4vw,2.4rem);margin-bottom:.5rem}
+h3{font-size:1.15rem;letter-spacing:-.01em}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.85em;color:var(--accent)}
+.sub{color:var(--muted);margin-bottom:2rem;max-width:68ch}
+
+/* Navbar (Flexbox) */
+.navbar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem 1.5rem;padding:1.1rem 7%;background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:1.5rem;letter-spacing:.02em}.logo span{color:var(--accent)}
+.navbar nav{display:flex;flex-wrap:wrap;gap:.5rem 1.75rem}
+.navbar nav a{color:var(--muted)}.navbar nav a:hover{color:var(--text)}
+
+.hero,.section{max-width:1280px;margin:0 auto;padding:4rem 5%}
+.hero{padding-top:3.5rem;padding-bottom:1rem}
+.badge{display:inline-block;padding:.4rem 1.1rem;border:1px solid #3d5a2a;border-radius:999px;color:#9ada34;font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:58ch}
+
+/* 1. Photo gallery: repeat + minmax + auto-fit */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));grid-auto-rows:170px;grid-auto-flow:dense;gap:1rem}
+.tile{display:flex;flex-direction:column;justify-content:flex-end;padding:1rem 1.25rem;border-radius:20px;color:var(--ink);font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.tile small{display:block;font-weight:600;font-size:.85rem;opacity:.75}
+.t1{background:#a3e635}.t2{background:#7fb82b}.t3{background:#b5ee55}.t4{background:#5f8f22;color:#f0f5ef}
+.t5{background:#8cc92f}.t6{background:#2b4a3a;color:#f0f5ef}.t7{background:#6fa326}.t8{background:#c9f27f}
+.wide{grid-column:span 2}.tall{grid-row:span 2}
+
+/* 2. Magazine layout: named grid areas */
+.magazine{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-areas:"feature feature sidebar" "story1 story2 sidebar" "quote quote quote";gap:1.25rem}
+.panel{padding:1.75rem;background:linear-gradient(160deg,var(--a),var(--b));border:1px solid var(--line);border-radius:24px}
+.panel p{color:var(--muted);margin-top:.6rem}
+.feature{grid-area:feature;background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.feature p{color:#2c4a14}.feature h3{font-size:clamp(1.6rem,3.5vw,2.4rem)}
+.story1{grid-area:story1}.story2{grid-area:story2}
+.sidebar{grid-area:sidebar}
+.sidebar ul{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.8rem}
+.sidebar li{padding-bottom:.8rem;border-bottom:1px solid var(--line);color:var(--muted)}
+.quote{grid-area:quote;font-size:clamp(1.2rem,2.6vw,1.7rem);font-weight:700;letter-spacing:-.02em}
+
+/* 3. Dashboard: header + sidebar + product grid */
+.dash{display:grid;grid-template-columns:220px 1fr;grid-template-areas:"side head" "side main";gap:1.25rem}
+.dash-head{grid-area:head;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem}
+.chip{padding:.4rem 1rem;background:var(--soft);border:1px solid var(--line);border-radius:999px;font-size:.9rem;color:var(--muted)}
+.chip b{color:var(--accent)}
+.dash-side{grid-area:side;display:flex;flex-direction:column;gap:.4rem;padding:1.25rem}
+.dash-side strong{margin-bottom:.6rem}
+.dash-side a{padding:.55rem .9rem;border-radius:999px;color:var(--muted)}
+.dash-side a:hover,.dash-side a.on{background:var(--soft);color:var(--accent)}
+.products{grid-area:main;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+/* product card: Flexbox inside Grid */
+.product{display:flex;flex-direction:column;gap:.5rem;padding:1.25rem;background:linear-gradient(160deg,var(--a),var(--b));border:1px solid var(--line);border-radius:20px}
+.product .top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.85rem;color:var(--muted)}
+.dot{display:inline-block;width:.6rem;height:.6rem;border-radius:50%;background:var(--accent);margin-right:.35rem}
+.dot.low{background:#e0a458}
+.product p{color:var(--muted);font-size:.92rem}
+.product .bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:.6rem}
+.price{font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+
+.footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1rem;padding:1.5rem 7%;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+.to-top{position:fixed;right:1.5rem;bottom:1.5rem;display:flex;justify-content:center;align-items:center;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:1.5rem;font-weight:700}
+
+/* Tablet */
+@media (max-width:900px){
+  .magazine{grid-template-columns:1fr 1fr;grid-template-areas:"feature feature" "story1 story2" "sidebar sidebar" "quote quote"}
+  .dash{grid-template-columns:1fr;grid-template-areas:"head" "side" "main"}
+  .dash-side{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .dash-side strong{margin:0 .6rem 0 0}
+}
+/* Mobile */
+@media (max-width:560px){
+  .magazine{grid-template-columns:1fr;grid-template-areas:"feature" "story1" "story2" "sidebar" "quote"}
+  .wide,.tall{grid-column:auto;grid-row:auto}
+  .section{padding:3rem 5%}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <a class="logo" href="#top">MSA<span>.</span></a>
+  <nav aria-label="Main"><a href="#gallery">Gallery</a><a href="#magazine">Magazine</a><a href="#dashboard">Dashboard</a></nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <span class="badge">Day 08 · CSS Grid</span>
+    <h1>One page, three <em>Grid layouts.</em></h1>
+    <p>A photo gallery, a magazine page and a product dashboard. Grid builds the page structure, Flexbox arranges what sits inside each piece.</p>
+  </section>
+
+  <section class="section" id="gallery">
+    <h2>Photo gallery</h2>
+    <p class="sub">Columns come from <code>repeat(auto-fit, minmax(220px, 1fr))</code>. The number of columns changes with the screen width, with no media query.</p>
+    <div class="gallery">
+      <div class="tile t1 wide tall">Morning light<small>Wide and tall</small></div>
+      <div class="tile t2">Campus walk</div>
+      <div class="tile t3">Library desk</div>
+      <div class="tile t4">Night study</div>
+      <div class="tile t5 wide">Bus window<small>Spans two columns</small></div>
+      <div class="tile t6">Chai break</div>
+      <div class="tile t7 tall">Notebook<small>Spans two rows</small></div>
+      <div class="tile t8">Lab bench</div>
+    </div>
+  </section>
+
+  <section class="section" id="magazine">
+    <h2>Magazine layout</h2>
+    <p class="sub">Built with <code>grid-template-areas</code>. Each block is placed by name, and the areas are redefined on tablet and mobile.</p>
+    <div class="magazine">
+      <article class="panel feature"><h3>Learning to build layouts that hold up</h3><p>Grid works in two directions at once, so rows and columns can be planned together instead of nudged into place.</p></article>
+      <article class="panel story1"><h3>Rows and columns</h3><p>Define the tracks first, then let the content fill them.</p></article>
+      <article class="panel story2"><h3>Named areas</h3><p>Reading the layout in the CSS is as easy as reading a sketch.</p></article>
+      <aside class="panel sidebar"><h3>In this issue</h3><ul><li>Auto-fit gallery</li><li>Spanning tiles</li><li>Area-based layout</li><li>Dashboard with sidebar</li></ul></aside>
+      <blockquote class="panel quote">Plan the structure with Grid, then use Flexbox for the details.</blockquote>
+    </div>
+  </section>
+
+  <section class="section" id="dashboard">
+    <h2>Product dashboard</h2>
+    <p class="sub">Header, sidebar and content use named areas. Products sit in an <code>auto-fill</code> grid, and each card is a Flexbox column.</p>
+    <div class="dash">
+      <header class="panel dash-head">
+        <h3>Store overview</h3>
+        <div class="chips"><span class="chip">Products <b>6</b></span><span class="chip">In stock <b>4</b></span><span class="chip">Low stock <b>2</b></span></div>
+      </header>
+      <nav class="panel dash-side" aria-label="Dashboard">
+        <strong>Menu</strong>
+        <a class="on" href="#dashboard">Products</a><a href="#dashboard">Orders</a><a href="#dashboard">Customers</a><a href="#dashboard">Reports</a>
+      </nav>
+      <div class="products">
+        <article class="product"><div class="top"><span>Stationery</span><span><i class="dot"></i>In stock</span></div><h3>A5 Notebook</h3><p>192 ruled pages, lay-flat binding.</p><div class="bottom"><span class="price">₹249</span><span class="chip">42 left</span></div></article>
+        <article class="product"><div class="top"><span>Stationery</span><span><i class="dot low"></i>Low</span></div><h3>Gel Pen Pack</h3><p>Pack of 10, smooth black ink.</p><div class="bottom"><span class="price">₹99</span><span class="chip">6 left</span></div></article>
+        <article class="product"><div class="top"><span>Accessories</span><span><i class="dot"></i>In stock</span></div><h3>Laptop Sleeve</h3><p>14 inch, padded and water resistant.</p><div class="bottom"><span class="price">₹449</span><span class="chip">18 left</span></div></article>
+        <article class="product"><div class="top"><span>Accessories</span><span><i class="dot"></i>In stock</span></div><h3>Desk Lamp</h3><p>USB powered, three brightness levels.</p><div class="bottom"><span class="price">₹599</span><span class="chip">12 left</span></div></article>
+        <article class="product"><div class="top"><span>Stationery</span><span><i class="dot low"></i>Low</span></div><h3>Sticky Notes</h3><p>Four colours, 400 sheets.</p><div class="bottom"><span class="price">₹129</span><span class="chip">4 left</span></div></article>
+        <article class="product"><div class="top"><span>Accessories</span><span><i class="dot"></i>In stock</span></div><h3>Cable Organiser</h3><p>Keeps chargers and earphones untangled.</p><div class="bottom"><span class="price">₹149</span><span class="chip">30 left</span></div></article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><span>CSS Grid gallery and dashboard</span><span>Mohammad Saqib · BCS2026460 · Day 08</span></footer>
+<a class="to-top" href="#top" aria-label="Back to top">&uarr;</a>
+</body>
+</html>
